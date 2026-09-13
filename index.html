@@ -44,6 +44,15 @@
                 Tobias<span class="logo-accent">.</span>Correa
             </a>
 
+            <!-- Menú hamburguesa (solo visible en mobile): checkbox oculto + label,
+                 mismo truco 100% CSS que el switch de idioma. Como está ANTES del
+                 <nav> en el DOM, el selector hermano "~" puede mostrar/ocultar el
+                 menú y animar el ícono según su estado marcado/desmarcado. -->
+            <input type="checkbox" id="nav-toggle" class="nav-checkbox" aria-label="Abrir menú de navegación">
+            <label for="nav-toggle" class="nav-burger" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </label>
+
             <!-- SPEECH CUE: "Next to the logo is the navigation menu. It's a <nav>
                  element that wraps an unordered list, <ul>, and each item, <li>,
                  contains an <a> tag, which is the actual link." -->
@@ -319,7 +328,7 @@
                     <article class="card project-card">
                         <div class="project-image">
                             <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-                            <img src="images/pagina-ivan/ivan-catalogo.jpeg" alt="Catálogo de programas de entrenamiento del sitio de Ivan Larrosa">
+                            <img src="images/pagina-ivan/ivan-faq.jpeg" alt="Catálogo de programas de entrenamiento del sitio de Ivan Larrosa">
                         </div>
                         <div class="project-body">
                             <h3>Ivan Larrosa &mdash; <span class="i18n-es">Venta de Programas</span><span class="i18n-en">Training Program Sales</span></h3>
@@ -405,7 +414,24 @@
                 <p>
                     <span class="i18n-es">¿Interesado en trabajar juntos? Hablemos sobre tu próximo proyecto.</span><span class="i18n-en">Interested in working together? Let's talk about your next project.</span>
                 </p>
-                <a href="mailto:tobiasbcorrea@gmail.com" class="btn btn-primary"><span class="i18n-es">Escribime</span><span class="i18n-en">Message Me</span></a>
+
+                <!-- Tres formas de contacto para no depender de que el visitante
+                     tenga un cliente de correo (Outlook, etc.) instalado y
+                     configurado por defecto: mailto: (funciona en celulares y en
+                     PCs con cliente configurado), Gmail web (funciona en cualquier
+                     navegador, sin instalar nada) y copiar el email al portapapeles. -->
+                <div class="contact-actions">
+                    <a href="mailto:tobiasbcorrea@gmail.com" class="btn btn-primary"><span class="i18n-es">Escribime</span><span class="i18n-en">Message Me</span></a>
+                    <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=tobiasbcorrea@gmail.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><span class="i18n-es">Abrir en Gmail</span><span class="i18n-en">Open in Gmail</span></a>
+                    <button type="button" class="btn btn-secondary" id="copy-email-btn" data-email="tobiasbcorrea@gmail.com" data-copied-es="¡Copiado!" data-copied-en="Copied!">
+                        <span class="i18n-es">Copiar email</span><span class="i18n-en">Copy email</span>
+                    </button>
+                </div>
+
+                <p class="contact-email-fallback">
+                    <span class="i18n-es">O escribime directo a</span><span class="i18n-en">Or email me directly at</span>
+                    <code>tobiasbcorrea@gmail.com</code>
+                </p>
             </div>
         </section>
 
@@ -434,6 +460,46 @@
             </div>
         </div>
     </footer>
+
+    <!-- Un poco de JS, solo para dos detalles de usabilidad que el CSS puro no
+         puede resolver: cerrar el menú hamburguesa al tocar un link, y copiar
+         el email al portapapeles como alternativa a mailto:. Todo lo demás del
+         sitio (layout, idioma, tema) sigue siendo 100% HTML/CSS. -->
+    <script>
+        // Cierra el menú mobile automáticamente al navegar a una sección
+        const navToggle = document.getElementById('nav-toggle');
+        document.querySelectorAll('.main-nav a').forEach((link) => {
+            link.addEventListener('click', () => {
+                if (navToggle) navToggle.checked = false;
+            });
+        });
+
+        // Botón "Copiar email": alternativa para quien no tenga un cliente de
+        // correo (Outlook, etc.) configurado por defecto en su computadora.
+        const copyBtn = document.getElementById('copy-email-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async () => {
+                const email = copyBtn.dataset.email;
+                const isEnglish = document.getElementById('lang-toggle').checked;
+                const originalHTML = copyBtn.innerHTML;
+                try {
+                    await navigator.clipboard.writeText(email);
+                } catch (err) {
+                    // Fallback para navegadores sin permiso/soporte de Clipboard API
+                    const tempInput = document.createElement('textarea');
+                    tempInput.value = email;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                }
+                copyBtn.textContent = isEnglish ? copyBtn.dataset.copiedEn : copyBtn.dataset.copiedEs;
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
 
 </body>
 </html>
