@@ -1,0 +1,982 @@
+/* =========================================================
+   TOBIAS CORREA — HOJA DE ESTILOS DEL PORTFOLIO
+   CSS3 puro. Estética "terminal / editor de código": toda la
+   página comparte la paleta, la tipografía monoespaciada y los
+   detalles (prompts "$", comentarios "#", ventanas con puntos)
+   que antes solo vivían en la terminal del hero.
+   Organizado por: variables, reset, layout, secciones.
+   ========================================================= */
+
+/*
+    SPEECH CUE (CSS design -- colors): "I chose a dark theme, with an almost black
+    background, combined with a vibrant cyan accent color, plus additional
+    colors like green, amber and blue, inspired by the syntax highlighting
+    you would see in a code editor or a terminal."
+*/
+/* ---------------------------------------------------------
+   1. VARIABLES CSS (Custom Properties)
+   La paleta completa está tomada del resaltado de sintaxis de
+   una terminal: fondo casi negro, texto claro y acentos de
+   colores puntuales (cyan, verde, ámbar, azul, rojo) en vez de
+   un único color "de marca".
+   --------------------------------------------------------- */
+:root {
+    /* Paleta de colores */
+    --color-bg: #0b0f17;          /* fondo oscuro principal, casi negro */
+    --color-bg-alt: #0d121c;      /* fondo alternativo para dar ritmo entre secciones */
+    --color-surface: #11161f;     /* tarjetas, header, ventanas — el mismo tono que la terminal */
+    --color-border: #262c38;      /* bordes / separadores sutiles */
+    --color-text: #e2e8f0;        /* texto principal — alto contraste sobre fondo oscuro */
+    --color-text-muted: #7d8590;  /* texto secundario, tono "comentario" */
+    --color-accent: #22d3ee;      /* acento vibrante (cyan) — el mismo color que el cursor de la terminal */
+    --color-accent-hover: #67e8f9;/* acento más claro para hover */
+    --color-hire: #e0af68;        /* acento "comando" (ámbar) para el botón "Contrátame" */
+    --color-hire-hover: #f0c48c;
+
+    /* Colores de sintaxis de la terminal — reutilizados en toda la página */
+    --term-bg: #11161f;
+    --term-titlebar: #171d29;
+    --term-comment: #5c6478;
+    --term-prompt: #56d364;
+    --term-command: #e0af68;
+    --term-arrow: #61afef;
+    --term-listing: #8b949e;
+    --term-skills: #f47067;
+
+    /* Tamaños de fuente — sistema tipográfico claro y escalable */
+    --fs-sm: 0.9rem;
+    --fs-base: 1rem;
+    --fs-md: 1.15rem;
+    --fs-lg: 1.4rem;
+    --fs-xl: 1.9rem;
+    --fs-xxl: 2.75rem;
+
+    /* Espaciado y layout */
+    --max-width: 1100px;
+    --radius: 10px;
+    --transition-speed: 0.25s;
+}
+
+/* ---------------------------------------------------------
+   2. RESET / ESTILOS BASE
+   La tipografía monoespaciada (la misma familia que usa la
+   terminal) se aplica a TODO el sitio, no solo al bloque de
+   código, para que toda la página se sienta "escrita en código".
+   --------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth; /* navegación interna suave con los enlaces de anclaje */
+}
+
+/*
+    SPEECH CUE (CSS design -- font): "I used a monospace font, called JetBrains Mono,
+    throughout the whole page, because it gives the website a developer, or
+    terminal, feeling."
+*/
+body {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: var(--fs-base);
+    line-height: 1.65;             /* mejora la legibilidad de los párrafos en monoespaciada */
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    position: relative;
+}
+
+/* Textura de fondo para TODA la página: una grilla sutil + resplandores de color,
+   igual que el fondo de un editor de código. Es puro CSS (gradientes), fijo en
+   el viewport para que no se mueva con el scroll y no interfiera con el texto. */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 85% 8%, rgba(34, 211, 238, 0.08), transparent 40%),
+        radial-gradient(circle at 6% 92%, rgba(224, 175, 104, 0.06), transparent 35%),
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 44px 44px,
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 44px 44px;
+}
+
+/* Contenedor centrado y reutilizable para mantener el contenido alineado y legible */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* Los títulos principales (h1 de hero, h2 de sección) se estilizan como una
+   línea de comentario de código ("# ...") seguida de un cursor parpadeante,
+   para que cada título se sienta parte de la misma terminal del hero. */
+h1::before,
+h2::before {
+    content: "# ";
+    color: var(--term-comment);
+    font-weight: 400;
+}
+
+h1::after,
+h2::after {
+    content: "";
+    display: inline-block;
+    width: 0.45em;
+    height: 0.85em;
+    margin-left: 0.3em;
+    background-color: var(--color-accent);
+    vertical-align: -0.08em;
+    animation: blink 1s steps(1) infinite;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ---------------------------------------------------------
+   3. HEADER Y NAVEGACIÓN
+   El header entero funciona como la "barra de ventana" del
+   sitio: el logo lleva los mismos tres puntos (rojo/amarillo/
+   verde) que cualquier ventana de terminal, y cada link del
+   menú se comporta como un comando ("$ Sobre mí").
+   --------------------------------------------------------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.25rem;
+    padding: 1rem 1.5rem;
+}
+
+/* Logo de texto, con los "tres puntos" de ventana como parte de la marca */
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    color: var(--color-text);
+    white-space: nowrap;
+}
+
+.logo-dots {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.logo-dots .dot {
+    width: 9px;
+    height: 9px;
+}
+
+.logo-accent {
+    color: var(--color-accent);
+}
+
+/* Menú de navegación: enlaces <ul><li> distribuidos horizontalmente, cada uno
+   prefijado con "$" (como un prompt de terminal) que se enciende en hover */
+.main-nav ul {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.main-nav a {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color var(--transition-speed) ease;
+}
+
+/* Como la fuente es monoespaciada, "ch" equivale al ancho exacto de un
+   carácter. Cada link reserva el ancho del texto MÁS LARGO entre su
+   versión en español e inglés (+ lugar para el prefijo "$ "), para que
+   el nav no cambie de tamaño ni "salte" al cambiar de idioma. */
+.main-nav li:nth-child(1) a { min-width: 10ch; } /* Sobre mí / About        -> máx. 8  */
+.main-nav li:nth-child(2) a { min-width: 13ch; } /* Habilidades / Skills    -> máx. 11 */
+.main-nav li:nth-child(3) a { min-width: 11ch; } /* Proyectos / Projects    -> máx. 9  */
+.main-nav li:nth-child(4) a { min-width: 19ch; } /* En Desarrollo / Work in Progress -> máx. 17 */
+.main-nav li:nth-child(5) a { min-width: 10ch; } /* Contacto / Contact      -> máx. 8  */
+
+.main-nav a::before {
+    content: "$";
+    color: var(--term-prompt);
+    margin-right: 6px;
+    opacity: 0.55;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.main-nav a:hover {
+    color: var(--color-accent);
+}
+
+.main-nav a:hover::before {
+    opacity: 1;
+}
+
+/* ---------------------------------------------------------
+   3b. SWITCH DE IDIOMA (ES / EN) — 100% CSS, sin JavaScript
+   Truco del "checkbox oculto + label": #lang-toggle es el primer
+   hijo de <body>, así que el selector hermano "~" puede alcanzar
+   header, main y footer y mostrar/ocultar .i18n-es / .i18n-en
+   en toda la página según si el checkbox está marcado o no.
+   --------------------------------------------------------- */
+
+/* El checkbox real queda oculto visualmente pero sigue siendo
+   accesible por teclado (Tab + Espacio) y para lectores de pantalla */
+.lang-checkbox {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* El switch visible: un <label for="lang-toggle"> con pinta de toggle */
+.lang-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 74px;
+    height: 32px;
+    border-radius: 999px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    overflow: hidden;
+}
+
+.lang-option {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    transition: color var(--transition-speed) ease;
+}
+
+/* El "thumb" que se desliza para marcar el idioma activo */
+.lang-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 33px;
+    height: 24px;
+    border-radius: 999px;
+    background-color: var(--color-accent);
+    transition: transform var(--transition-speed) ease;
+}
+
+/* Estado por defecto (checkbox sin marcar) = español activo */
+#lang-toggle:not(:checked) ~ header .lang-option.lang-es {
+    color: #04202a;
+}
+
+/* Checkbox marcado = inglés activo: el thumb se desliza a la derecha
+   y el texto "EN" pasa a tener el contraste oscuro sobre el acento */
+#lang-toggle:checked ~ header .lang-thumb {
+    transform: translateX(37px);
+}
+
+#lang-toggle:checked ~ header .lang-option.lang-en {
+    color: #04202a;
+}
+
+/* Anillo de foco visible al navegar el switch con el teclado */
+#lang-toggle:focus-visible ~ header .lang-switch {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* Contenido bilingüe: cada string de la página está duplicado en dos
+   <span>, uno .i18n-es y otro .i18n-en. Por defecto se ve el español;
+   al marcar el checkbox, header/main/footer intercambian cuál se muestra. */
+.i18n-en {
+    display: none;
+}
+
+#lang-toggle:checked ~ header .i18n-en,
+#lang-toggle:checked ~ main .i18n-en,
+#lang-toggle:checked ~ footer .i18n-en {
+    display: inline;
+}
+
+#lang-toggle:checked ~ header .i18n-es,
+#lang-toggle:checked ~ main .i18n-es,
+#lang-toggle:checked ~ footer .i18n-es {
+    display: none;
+}
+
+/* ---------------------------------------------------------
+   4. BOTONES
+   Cada botón se lee como un comando de shell: un "$" tenue
+   antes del texto, tipografía monoespaciada y un efecto de
+   hover claro que refuerza la sensación de "esto es clickeable".
+
+   SPEECH CUE (CSS design -- buttons): "All the buttons have a clear hover effect.
+   When you place the mouse over them, they change color and slightly lift
+   up, which gives the user immediate visual feedback."
+    */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: var(--fs-base);
+    transition: background-color var(--transition-speed) ease,
+                transform var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease;
+}
+
+.btn::before {
+    content: "$";
+    margin-right: 0.55em;
+    opacity: 0.6;
+}
+
+/* Botón CTA principal — color de acento primario (cyan) */
+.btn-primary {
+    background-color: var(--color-accent);
+    color: #04202a;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(34, 211, 238, 0.35);
+}
+
+/* Botón "Contrátame" — el elemento distintivo junto al menú, en el acento "comando" (ámbar) */
+.btn-hire {
+    background-color: var(--color-hire);
+    color: #2a1a06;
+}
+
+.btn-hire:hover {
+    background-color: var(--color-hire-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(224, 175, 104, 0.35);
+}
+
+/* Botón secundario — usado dentro de las tarjetas de proyecto */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    padding: 0.55rem 1.3rem;
+    font-size: var(--fs-sm);
+    margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-accent);
+    color: #04202a;
+    transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------
+   5. SECCIÓN HERO
+   Título grande, subtítulo, ventana de terminal y botón CTA —
+   lo primero que ve una persona al entrar al sitio.
+   --------------------------------------------------------- */
+.hero {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero h1 {
+    font-size: var(--fs-xxl);
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+.hero .subtitle {
+    font-size: var(--fs-md);
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+}
+
+/* Fila de botones del hero: CTA principal + "Contrátame" uno al lado del otro */
+.hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Ventana de terminal decorativa en el hero */
+.terminal {
+    flex: 1.1;
+    max-width: 520px;
+    width: 100%;
+    border-radius: 12px;
+    background-color: var(--term-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+}
+
+/* Barra de ventana reutilizable: se usa en el hero Y en la tarjeta "En Desarrollo" */
+.title-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 14px;
+    background-color: var(--term-titlebar);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.dot-red    { background-color: #ff5f56; }
+.dot-yellow { background-color: #ffbd2e; }
+.dot-green  { background-color: #27c93f; }
+
+.title-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--term-listing);
+    font-size: var(--fs-sm);
+}
+
+.term-body {
+    padding: 22px 26px 26px;
+    font-size: 0.85rem;
+    line-height: 1.85;
+    white-space: pre-wrap;
+}
+
+.term-comment { color: var(--term-comment); }
+.term-prompt  { color: var(--term-prompt); }
+.term-path    { color: var(--color-text); }
+.term-command { color: var(--term-command); }
+.term-arrow   { color: var(--term-arrow); }
+.term-listing { color: var(--term-listing); }
+.term-skills  { color: var(--term-skills); }
+.term-check   { color: var(--term-prompt); }
+.term-task    { color: var(--color-text-muted); }
+
+/* Cursor de terminal parpadeante, animado solo con CSS (también usado en h1/h2) */
+.term-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--color-accent);
+    vertical-align: -2px;
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    0%, 50%      { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1;    transform: scale(1); }
+    50%      { opacity: 0.35; transform: scale(0.7); }
+}
+
+/* ---------------------------------------------------------
+   5b. SECCIÓN "SOBRE MÍ"
+   Texto a la izquierda, foto de perfil circular a la derecha.
+   --------------------------------------------------------- */
+.about-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-image {
+    flex-shrink: 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--color-accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Fila de enlaces a redes sociales (iconos SVG en línea) */
+.social-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: color var(--transition-speed) ease,
+                border-color var(--transition-speed) ease,
+                transform var(--transition-speed) ease;
+}
+
+.social-link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------
+   6. ESTILOS GENÉRICOS DE SECCIÓN
+   Tipografía y espaciado compartidos por todas las <section>
+   dentro de <main>, más un fondo alternado para dar ritmo visual.
+   --------------------------------------------------------- */
+.section {
+    padding: 5rem 0;
+}
+
+.section-alt {
+    background-color: var(--color-bg-alt);
+}
+
+.section h2 {
+    font-size: var(--fs-xl);
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+}
+
+.section p {
+    max-width: 700px;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+}
+
+.section p code {
+    background-color: var(--color-bg);
+    color: var(--term-command);
+    border: 1px solid var(--color-border);
+    padding: 0.1em 0.45em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* ---------------------------------------------------------
+   6b. SECCIÓN "HABILIDADES"
+   Cada categoría del stack (lenguajes, frameworks, bases de
+   datos, herramientas, hardware) se presenta como un bloque
+   con su propia etiqueta de "comentario de código".
+   --------------------------------------------------------- */
+.skills-group {
+    margin-bottom: 2.25rem;
+}
+
+.skills-group:last-child {
+    margin-bottom: 0;
+}
+
+.skills-label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--term-comment);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.9rem;
+}
+
+.skills-label::before {
+    content: "// ";
+}
+
+/* ---------------------------------------------------------
+   7. SECCIÓN DE PROYECTOS
+   Lista de tecnologías con pinta de "flags" de CLI (--python)
+   + grilla de tarjetas de proyectos con captura y barra de navegador.
+   --------------------------------------------------------- */
+.stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.5rem 0 2.5rem;
+}
+
+.stack-item {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+.stack-item::before {
+    content: "--";
+    color: var(--term-comment);
+    margin-right: 2px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: transform var(--transition-speed) ease,
+                border-color var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+}
+
+.card h3 {
+    font-size: var(--fs-md);
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+.card p {
+    font-size: var(--fs-sm);
+    margin-bottom: 0;
+    max-width: none;
+}
+
+/* Tarjetas de proyecto real: imagen (captura) + barra de navegador simulada + contenido */
+.project-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-image {
+    position: relative;
+    background-color: #05070d;
+}
+
+/* Barra decorativa que simula la barra de un navegador, sobre la captura */
+.browser-bar {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    background-color: #05070d;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.browser-bar span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--color-border);
+}
+
+.project-image img {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    object-position: top;
+}
+
+.project-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.project-body p {
+    margin-bottom: 1rem;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.project-tags li {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.7rem;
+    border-radius: 6px;
+}
+
+.project-tags li::before {
+    content: "--";
+    color: var(--term-comment);
+    margin-right: 2px;
+}
+
+.project-body .btn {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+.tag-note {
+    margin-top: auto;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   8. SECCIÓN "EN DESARROLLO"
+   La tarjeta entera se convierte en OTRA ventana de terminal
+   (misma barra con los tres puntos que la del hero), para que
+   el proyecto activo se sienta parte de la misma consola.
+   --------------------------------------------------------- */
+.wip-card {
+    background-color: var(--term-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 950px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.wip-content {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+    padding: 2rem;
+}
+
+.wip-text {
+    flex: 1.3;
+}
+
+.wip-image {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background-color: #05070d;
+    align-self: center;
+}
+
+.wip-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.wip-card h3 {
+    font-size: var(--fs-md);
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+.wip-card h4 {
+    font-size: var(--fs-base);
+    color: var(--color-accent);
+    margin: 1.25rem 0 0.5rem;
+}
+
+.wip-list {
+    padding-left: 1.25rem;
+    color: var(--color-text-muted);
+}
+
+.wip-list li {
+    list-style: disc;
+    margin-bottom: 0.4rem;
+}
+
+/* Insignia de estado: un punto verde parpadeante ("proceso activo") en vez de texto */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+    padding: 0.4rem 1rem;
+    background-color: rgba(34, 211, 238, 0.12);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: 999px;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.status-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--term-prompt);
+    animation: pulse 1.6s ease-in-out infinite;
+}
+
+.status-badge:hover {
+    background-color: rgba(34, 211, 238, 0.25);
+}
+
+/* ---------------------------------------------------------
+   9. FOOTER
+   --------------------------------------------------------- */
+.site-footer {
+    padding: 2rem 0;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.site-footer p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+}
+
+.site-footer .social-link {
+    width: 34px;
+    height: 34px;
+}
+
+/* ---------------------------------------------------------
+   10. AJUSTES RESPONSIVE
+   Apila los elementos del header, el hero y reduce los
+   tamaños de los títulos en pantallas pequeñas para
+   preservar la legibilidad.
+   --------------------------------------------------------- */
+@media (max-width: 700px) {
+    .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .main-nav ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero-inner {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    .hero-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero h1 {
+        font-size: var(--fs-xl);
+    }
+
+    .hero .subtitle {
+        font-size: var(--fs-base);
+    }
+
+    .terminal {
+        max-width: 100%;
+    }
+
+    .term-body {
+        font-size: 0.75rem;
+    }
+
+    .about-inner {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    .wip-content {
+        flex-direction: column;
+        padding: 1.25rem;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/*
+    SPEECH CUE (closing -- why is this design good for users?):
+    "First, the color palette provides strong contrast between the text and
+    the background, which makes the content easy to read. Second, the layout
+    is consistent across the whole website — every button, heading and
+    section follows the same visual language. And third, since I used
+    semantic HTML tags, the website is also accessible and easy to
+    understand, both for users and for screen readers."
+*/

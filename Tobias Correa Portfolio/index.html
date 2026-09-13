@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tobias Correa | Desarrollador y Consultor Tecnológico</title>
+    <!-- Fuente monoespaciada (misma familia "de código" usada en toda la página) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Switch de idioma ES/EN, 100% CSS (checkbox oculto + label).
+         Tiene que ser el PRIMER hijo de <body> para que el selector
+         hermano "~" de CSS pueda alcanzar header, main y footer. -->
+    <input type="checkbox" id="lang-toggle" class="lang-checkbox" aria-label="Switch language between Spanish and English">
+
+    <!--
+        SPEECH OUTLINE -- quick map for the oral presentation
+        1) LAYOUT     -> header (logo, nav, language switch), hero (h1, subtitle, CTA + Hire Me buttons, social icons)
+        2) WORK IN PROGRESS -> see cue inside the #wip section below
+        3) HTML STRUCTURE   -> header / main / footer, <nav><ul><li><a>
+           Tags used on this site: header, nav, main, section, article, footer,
+           h1, h2, h3, h4, p, ul, li, a, img, svg, span, div, input, label, code
+        4) CSS DESIGN       -> monospace font, dark theme + accent colors, button hover effect
+        Each step below has its own "SPEECH CUE:" comment right where it happens in the code.
+    -->
+
+    <!-- ============ HEADER ============ -->
+    <!-- Contiene el logo de texto y la navegación principal del sitio -->
+    <header class="site-header">
+        <div class="container header-inner">
+
+            <!-- SPEECH CUE: "The logo is at the top-left of the header. It shows my
+                 name, 'Tobias.Correa', together with three decorative dots that
+                 imitate a terminal window." -->
+            <!-- Logo de texto (mi nombre), con los "tres puntos" de ventana de terminal -->
+            <a href="#hero" class="logo">
+                <span class="logo-dots" aria-hidden="true">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                </span>
+                Tobias<span class="logo-accent">.</span>Correa
+            </a>
+
+            <!-- SPEECH CUE: "Next to the logo is the navigation menu. It's a <nav>
+                 element that wraps an unordered list, <ul>, and each item, <li>,
+                 contains an <a> tag, which is the actual link." -->
+            <!-- Navegación principal: <nav> que envuelve una <ul> de enlaces <li> -->
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul>
+                    <li><a href="#about"><span class="i18n-es">Sobre mí</span><span class="i18n-en">About</span></a></li>
+                    <li><a href="#skills"><span class="i18n-es">Habilidades</span><span class="i18n-en">Skills</span></a></li>
+                    <li><a href="#projects"><span class="i18n-es">Proyectos</span><span class="i18n-en">Projects</span></a></li>
+                    <li><a href="#wip"><span class="i18n-es">En Desarrollo</span><span class="i18n-en">Work in Progress</span></a></li>
+                    <li><a href="#contact"><span class="i18n-es">Contacto</span><span class="i18n-en">Contact</span></a></li>
+                </ul>
+            </nav>
+
+            <!-- SPEECH CUE: "Right next to the navigation menu, on the right side,
+                 there is a language switch. It's a distinct element that lets the
+                 visitor toggle the whole page between Spanish and English,
+                 built with pure CSS, no JavaScript." -->
+            <!-- Switch de idioma: un <label> apunta al checkbox de arriba por "for".
+                 Al hacer click, cambia el estado del checkbox y el CSS se encarga
+                 de mostrar/ocultar los bloques .i18n-es / .i18n-en de toda la página. -->
+            <label for="lang-toggle" class="lang-switch">
+                <span class="lang-option lang-es">ES</span>
+                <span class="lang-option lang-en">EN</span>
+                <span class="lang-thumb" aria-hidden="true"></span>
+            </label>
+
+        </div>
+    </header>
+
+    <!-- SPEECH CUE: "Inside the <main> element you can find all the content
+         sections of the page: the hero section, About Me, Skills, Projects,
+         Work in Progress, and Contact. The <main> element holds all of the
+         page's content, organized into different section tags." -->
+    <!-- ============ CONTENIDO PRINCIPAL ============ -->
+    <main>
+
+        <!-- ---------- SECCIÓN HERO ---------- -->
+        <section id="hero" class="hero">
+            <div class="container hero-inner">
+
+                <div class="hero-text">
+                    <!-- SPEECH CUE: "The main title is an <h1> heading. Below the main
+                         title you can find a subtitle describing my roles, a primary
+                         call-to-action button plus a 'Hire Me' button, and two social
+                         icons linking to GitHub and LinkedIn." -->
+                    <!-- Título principal: <h1> -->
+                    <h1><span class="i18n-es">Hola, soy Tobias Correa</span><span class="i18n-en">Hi, I'm Tobias Correa</span></h1>
+
+                    <!-- Subtítulo describiendo mis roles -->
+                    <p class="subtitle">
+                        <span class="i18n-es">Técnico Informático &middot; Estudiante de Programación en la UTN &middot; Desarrollador y Consultor Tecnológico</span><span class="i18n-en">IT Technician &middot; Programming Student at UTN &middot; Developer &amp; Tech Consultant</span>
+                    </p>
+
+                    <!-- Fila de botones: CTA principal + "Contrátame" (antes vivía en el
+                         header, se movió acá para no ensanchar la navbar) -->
+                    <div class="hero-cta-row">
+                        <!-- Botón principal de llamada a la acción (CTA) -->
+                        <a href="#projects" class="btn btn-primary"><span class="i18n-es">Ver mis Proyectos</span><span class="i18n-en">View my Projects</span></a>
+
+                        <!-- Elemento distintivo: botón "Contrátame" -->
+                        <a href="#contact" class="btn btn-hire"><span class="i18n-es">Contrátame</span><span class="i18n-en">Hire Me</span></a>
+                    </div>
+
+                    <!-- Enlaces a redes / repositorios, con iconos SVG inline (sin JS ni imágenes externas) -->
+                    <div class="social-row">
+                        <a href="https://github.com/TobiiC" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                                <path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12Z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/tobias-b-correa/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                                <path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ventana de terminal decorativa: refuerza la identidad "developer" del hero.
+                     Los comandos y el comentario quedan igual en los dos idiomas (así se ve
+                     una terminal real); solo el texto de salida se traduce. -->
+                <div class="terminal" aria-hidden="true">
+                    <div class="title-bar">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                        <span class="title-text">tobias@dev: ~/portfolio</span>
+                    </div>
+                    <div class="term-body"><span class="term-comment"># Welcome to Tobias's Portfolio</span>
+<span class="term-prompt">tobias@dev ~ $</span> <span class="term-command">cat about.me</span>
+  <span class="term-arrow">→</span> <span class="term-path"><span class="i18n-es">Técnico Informático | Desarrollador | Consultor</span><span class="i18n-en">IT Technician | Developer | Consultant</span></span>
+<span class="term-prompt">tobias@dev ~ $</span> <span class="term-command">ls skills/ | wc -l</span>
+  <span class="term-listing">25+</span> <span class="term-skills"><span class="i18n-es">lenguajes, frameworks, bases de datos y herramientas</span><span class="i18n-en">languages, frameworks, databases and tools</span></span>
+<span class="term-prompt">tobias@dev ~ $</span> <span class="term-command">./deploy_projects.sh</span>
+  <span class="term-check">✓</span> <span class="term-task">GymTrack ..................... deployed</span>
+  <span class="term-check">✓</span> <span class="term-task">Edison Landing ............... deployed</span>
+<span class="term-prompt">tobias@dev ~ $</span> <span class="term-cursor"></span></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ---------- SOBRE MÍ ---------- -->
+        <section id="about" class="section">
+            <div class="container about-inner">
+                <div class="about-text">
+                    <h2><span class="i18n-es">Sobre mí</span><span class="i18n-en">About Me</span></h2>
+                    <p>
+                        <span class="i18n-es">Soy Técnico Informático y actualmente continúo mi formación como
+                        estudiante de programación en la UTN (Universidad Tecnológica Nacional). Tengo una
+                        fuerte pasión por construir software práctico y aplicable al mundo real. Además de
+                        mis estudios, trabajo como desarrollador independiente y consultor tecnológico,
+                        ayudando a equipos y clientes a diseñar, construir y mejorar aplicaciones a lo largo
+                        de todo el stack.</span><span class="i18n-en">I'm an IT Technician, and I'm currently
+                        continuing my studies as a programming student at UTN (Universidad Tecnológica
+                        Nacional). I have a strong passion for building practical software that applies to
+                        the real world. Besides my studies, I work as an independent developer and tech
+                        consultant, helping teams and clients design, build and improve applications across
+                        the whole stack.</span>
+                    </p>
+                    <p>
+                        <span class="i18n-es">También cuento con bastante experiencia trabajando con hardware de PC (ensamblaje,
+                        diagnóstico y mantenimiento), lo que me da una visión más completa de cómo funciona
+                        un sistema de punta a punta. Disfruto aprender nuevas herramientas rápidamente y
+                        transformar ideas en productos funcionales.</span><span class="i18n-en">I also have
+                        quite a bit of experience working with PC hardware (assembly, diagnostics and
+                        maintenance), which gives me a more complete view of how a system works end to end.
+                        I enjoy learning new tools quickly and turning ideas into working products.</span>
+                    </p>
+                </div>
+
+                <!-- Foto de perfil -->
+                <div class="about-image">
+                    <img src="images/1727876911340.jpeg" alt="Foto de Tobias Correa">
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- HABILIDADES ---------- -->
+        <section id="skills" class="section section-alt">
+            <div class="container">
+                <h2><span class="i18n-es">Habilidades</span><span class="i18n-en">Skills</span></h2>
+                <p>
+                    <span class="i18n-es">Estas son las tecnologías y herramientas con las que trabajo habitualmente,
+                    organizadas como si fuera el listado de un directorio</span><span class="i18n-en">These are
+                    the technologies and tools I usually work with, organized as if they were the listing
+                    of a</span> <code>skills/</code><span class="i18n-es"> directorio</span><span class="i18n-en"> directory</span>:
+                </p>
+
+                <div class="skills-group">
+                    <h3 class="skills-label"><span class="i18n-es">Lenguajes</span><span class="i18n-en">Languages</span></h3>
+                    <ul class="stack-list">
+                        <li class="stack-item">Python</li>
+                        <li class="stack-item">C#</li>
+                        <li class="stack-item">Java</li>
+                        <li class="stack-item">Bash</li>
+                        <li class="stack-item">PowerShell</li>
+                        <li class="stack-item">HTML5</li>
+                        <li class="stack-item">CSS3</li>
+                        <li class="stack-item">JavaScript</li>
+                    </ul>
+                </div>
+
+                <div class="skills-group">
+                    <h3 class="skills-label"><span class="i18n-es">Frameworks y Librerías</span><span class="i18n-en">Frameworks &amp; Libraries</span></h3>
+                    <ul class="stack-list">
+                        <li class="stack-item">Node.js</li>
+                        <li class="stack-item">Blazor</li>
+                        <li class="stack-item">Flask</li>
+                        <li class="stack-item">Django</li>
+                        <li class="stack-item">FastAPI</li>
+                    </ul>
+                </div>
+
+                <div class="skills-group">
+                    <h3 class="skills-label"><span class="i18n-es">Bases de Datos y Cloud</span><span class="i18n-en">Databases &amp; Cloud</span></h3>
+                    <ul class="stack-list">
+                        <li class="stack-item">MongoDB</li>
+                        <li class="stack-item">MySQL</li>
+                        <li class="stack-item">PostgreSQL</li>
+                        <li class="stack-item">MariaDB</li>
+                        <li class="stack-item">SQLite</li>
+                        <li class="stack-item">Supabase</li>
+                    </ul>
+                </div>
+
+                <div class="skills-group">
+                    <h3 class="skills-label"><span class="i18n-es">Herramientas y Software</span><span class="i18n-en">Tools &amp; Software</span></h3>
+                    <ul class="stack-list">
+                        <li class="stack-item">Git</li>
+                        <li class="stack-item">Claude Code</li>
+                        <li class="stack-item">VS Code</li>
+                        <li class="stack-item">Visual Studio</li>
+                        <li class="stack-item">Ubuntu</li>
+                        <li class="stack-item">OBS Studio</li>
+                        <li class="stack-item">Postman</li>
+                        <li class="stack-item">Blender</li>
+                        <li class="stack-item">Notion</li>
+                        <li class="stack-item">Canva</li>
+                    </ul>
+                </div>
+
+                <div class="skills-group">
+                    <h3 class="skills-label"><span class="i18n-es">Hardware y Soporte Técnico</span><span class="i18n-en">Hardware &amp; Technical Support</span></h3>
+                    <ul class="stack-list">
+                        <li class="stack-item"><span class="i18n-es">Ensamblaje de PCs</span><span class="i18n-en">PC Assembly</span></li>
+                        <li class="stack-item"><span class="i18n-es">Diagnóstico de Hardware</span><span class="i18n-en">Hardware Diagnostics</span></li>
+                        <li class="stack-item"><span class="i18n-es">Mantenimiento y Reparación</span><span class="i18n-en">Maintenance &amp; Repair</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---------- PROYECTOS ---------- -->
+        <section id="projects" class="section">
+            <div class="container">
+                <h2><span class="i18n-es">Proyectos</span><span class="i18n-en">Projects</span></h2>
+                <p>
+                    <span class="i18n-es">Estos son algunos de los proyectos reales que construí aplicando este stack:</span><span class="i18n-en">These are some of the real projects I built applying this stack:</span>
+                </p>
+
+                <div class="card-grid">
+
+                    <!-- Proyecto 1: GymTrack -->
+                    <article class="card project-card">
+                        <div class="project-image">
+                            <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <img src="images/gymtrack/gym-tracker-1.png" alt="Panel de rutina de GymTrack, mostrando sesiones totales y los días de entrenamiento">
+                        </div>
+                        <div class="project-body">
+                            <h3>GymTrack &mdash; <span class="i18n-es">Seguimiento de Gimnasio</span><span class="i18n-en">Gym Tracking App</span></h3>
+                            <p>
+                                <span class="i18n-es">Aplicación web construida con Django para registrar rutinas, ejercicios y
+                                progreso en el gimnasio. Desplegada y en producción.</span><span class="i18n-en">A web
+                                application built with Django to log workouts, exercises and progress at the
+                                gym. Deployed and in production.</span>
+                            </p>
+                            <ul class="project-tags">
+                                <li>Django</li>
+                                <li>Python</li>
+                            </ul>
+                            <a href="https://themagician.pythonanywhere.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><span class="i18n-es">Ver proyecto en vivo</span><span class="i18n-en">View live project</span></a>
+                        </div>
+                    </article>
+
+                    <!-- Proyecto 2: Edison -->
+                    <article class="card project-card">
+                        <div class="project-image">
+                            <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <img src="images/Edison-page/edison-hero.png" alt="Página de inicio de Edison, una consultora de transformación digital">
+                        </div>
+                        <div class="project-body">
+                            <h3>Edison &mdash; <span class="i18n-es">Landing de Consultora</span><span class="i18n-en">Consulting Firm Landing Page</span></h3>
+                            <p>
+                                <span class="i18n-es">Sitio web corporativo para Edison, una consultora de transformación de
+                                procesos y adopción de IA, con secciones de servicios, arquitectura
+                                empresarial y experiencia de cliente.</span><span class="i18n-en">A corporate
+                                website for Edison, a process-transformation and AI-adoption consulting
+                                firm, with sections for services, enterprise architecture and customer
+                                experience.</span>
+                            </p>
+                            <ul class="project-tags">
+                                <li>HTML5</li>
+                                <li>CSS3</li>
+                                <li>JavaScript</li>
+                            </ul>
+                            <a href="https://edison-la.com/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><span class="i18n-es">Ver proyecto en vivo</span><span class="i18n-en">View live project</span></a>
+                        </div>
+                    </article>
+
+                    <!-- Proyecto 3: Ivan Larrosa -->
+                    <article class="card project-card">
+                        <div class="project-image">
+                            <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <img src="images/pagina-ivan/ivan-catalogo.jpeg" alt="Catálogo de programas de entrenamiento del sitio de Ivan Larrosa">
+                        </div>
+                        <div class="project-body">
+                            <h3>Ivan Larrosa &mdash; <span class="i18n-es">Venta de Programas</span><span class="i18n-en">Training Program Sales</span></h3>
+                            <p>
+                                <span class="i18n-es">Plataforma para la venta de programas de entrenamiento en PDF, con
+                                catálogo filtrable y checkout de pago integrado con Mercado Pago.</span><span class="i18n-en">A
+                                platform for selling PDF training programs, with a filterable catalog and a
+                                checkout integrated with Mercado Pago.</span>
+                            </p>
+                            <ul class="project-tags">
+                                <li>JavaScript</li>
+                                <li>Node.js</li>
+                            </ul>
+                            <span class="tag-note"><span class="i18n-es">Proyecto privado &mdash; sin demo pública</span><span class="i18n-en">Private project &mdash; no public demo</span></span>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SPEECH CUE (Work in Progress -- 3 questions):
+             1. "What are you working on now?" -> GymTrack, a gym-tracking web app built with Django.
+             2. "What features are you adding/fixing?" -> progress charts & stats, custom routines
+                management, and mobile UI fixes.
+             3. "What is the site showing right now?" -> a working login and basic routine/exercise
+                logging live in production, while the stats module is still under development. -->
+        <!-- ---------- EN DESARROLLO ---------- -->
+        <section id="wip" class="section section-alt">
+            <div class="container">
+                <h2><span class="i18n-es">En Desarrollo</span><span class="i18n-en">Work in Progress</span></h2>
+
+                <article class="wip-card">
+                    <div class="title-bar">
+                        <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                        <span class="title-text">tobias@dev: ~/gymtrack</span>
+                    </div>
+                    <div class="wip-content">
+                        <div class="wip-text">
+                            <h3><span class="i18n-es">Proyecto actual: GymTrack, sistema de seguimiento de gimnasio</span><span class="i18n-en">Current project: GymTrack, a gym-tracking system</span></h3>
+
+                            <p>
+                                <span class="i18n-es">Actualmente estoy desarrollando de forma activa </span><span class="i18n-en">I'm currently actively developing </span><a href="https://themagician.pythonanywhere.com" target="_blank" rel="noopener noreferrer">GymTrack</a><span class="i18n-es">,
+                                una aplicación construida con Django y desplegada en PythonAnywhere que permite
+                                registrar entrenamientos y seguir el progreso en el gimnasio.</span><span class="i18n-en">,
+                                an application built with Django and deployed on PythonAnywhere that lets
+                                users log workouts and track their progress at the gym.</span>
+                            </p>
+
+                            <h4><span class="i18n-es">Funcionalidades que estoy agregando / corrigiendo:</span><span class="i18n-en">Features I'm adding / fixing:</span></h4>
+                            <ul class="wip-list">
+                                <li><span class="i18n-es">Estadísticas y gráficos de progreso por ejercicio y por rutina.</span><span class="i18n-en">Statistics and progress charts for each exercise and routine.</span></li>
+                                <li><span class="i18n-es">Mejoras en la gestión de rutinas personalizadas por usuario.</span><span class="i18n-en">Improvements to how personalized user routines are managed.</span></li>
+                                <li><span class="i18n-es">Corrección de detalles de interfaz para una mejor experiencia en mobile.</span><span class="i18n-en">Interface fixes for a better mobile experience.</span></li>
+                            </ul>
+
+                            <h4><span class="i18n-es">Qué muestra el proyecto en este momento:</span><span class="i18n-en">What the project shows right now:</span></h4>
+                            <p>
+                                <span class="i18n-es">La versión actual, disponible en producción, cuenta con inicio de sesión de
+                                usuarios y el registro básico de rutinas y ejercicios, mientras que el módulo
+                                de estadísticas y progreso sigue en desarrollo activo.</span><span class="i18n-en">The
+                                current version, live in production, includes user login and basic routine
+                                and exercise logging, while the statistics and progress module is still
+                                under active development.</span>
+                            </p>
+
+                            <a href="https://themagician.pythonanywhere.com" target="_blank" rel="noopener noreferrer" class="status-badge"><span class="i18n-es">En Desarrollo &mdash; Ver en vivo</span><span class="i18n-en">Work in Progress &mdash; View live</span></a>
+                        </div>
+
+                        <div class="wip-image">
+                            <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <img src="images/gymtrack/gym-tracker-2.png" alt="Historial de sesiones de entrenamiento en GymTrack">
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ---------- CONTACTO ---------- -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2><span class="i18n-es">Contacto</span><span class="i18n-en">Contact</span></h2>
+                <p>
+                    <span class="i18n-es">¿Interesado en trabajar juntos? Hablemos sobre tu próximo proyecto.</span><span class="i18n-en">Interested in working together? Let's talk about your next project.</span>
+                </p>
+                <a href="mailto:tobiasbcorrea@gmail.com" class="btn btn-primary"><span class="i18n-es">Escribime</span><span class="i18n-en">Message Me</span></a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SPEECH CUE: "Finally, the footer, at the very bottom of the page, contains
+         the copyright text and the same social media icons. So, the overall
+         structure is: header holds branding and navigation, main holds all the
+         content sections, and footer closes the page with copyright and social
+         links." -->
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2026 Tobias Correa. <span class="i18n-es">Todos los derechos reservados.</span><span class="i18n-en">All rights reserved.</span></p>
+            <div class="social-row">
+                <a href="https://github.com/TobiiC" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12Z"/>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/tobias-b-correa/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
